@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO; //input/output
+using System.Diagnostics;
 
 namespace Academy
 {
@@ -57,7 +59,18 @@ namespace Academy
 				group[i].Info();
 				Console.WriteLine(delimiter);
 			}
-			
+
+			StreamWriter sw = new StreamWriter("Group.txt"); //создаем и открываем поток
+
+			for (int i = 0; i < group.Length; i++)
+			{ 
+			  sw.WriteLine(group[i].ToFileString());
+			}
+			sw.Close();//потоки обязательно нужно закрывать
+
+			Process.Start("notepad.exe", "group.txt");
+
+			//CVV - COMMA SEPARATOR VALUES значения разделенные запятой;
 		} 
 	}
 }
