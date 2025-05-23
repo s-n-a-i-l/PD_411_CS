@@ -53,12 +53,12 @@ namespace Academy
 			new Teacher("Diaz", "Ricardo", 50, "Weapons Distribution", 25) };
 
 			//specialization(уточнение):
-			for (int i = 0; i < group.Length; i++)
-			{
-				Console.WriteLine(group[i]);
-				group[i].Info();
-				Console.WriteLine(delimiter);
-			}
+			//for (int i = 0; i < group.Length; i++)
+			//{
+			//	Console.WriteLine(group[i]);
+			//	group[i].Info();
+			//	Console.WriteLine(delimiter);
+			//}
 
 			StreamWriter sw = new StreamWriter("Group.txt"); //создаем и открываем поток
 
@@ -68,9 +68,16 @@ namespace Academy
 			}
 			sw.Close();//потоки обязательно нужно закрывать
 
-			Process.Start("notepad.exe", "group.txt");
+			string[] human2 = File.ReadAllLines("Group.txt");//все линии из файла в массив
 
-			//CVV - COMMA SEPARATOR VALUES значения разделенные запятой;
+			//  выводим массив на экран
+			foreach (string s in human2)
+			{
+				Console.WriteLine(s);
+			}
+			//Process.Start("notepad.exe", "group.txt");
+
+			//CSV - COMMA SEPARATOR VALUES значения разделенные запятой;
 		} 
 	}
 }
