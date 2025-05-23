@@ -37,9 +37,17 @@ namespace Academy
 				+ $"{Speciality.PadRight(25)} {Experience.ToString().PadRight(8)}";
 		}
 
-		public override string ToFileString()//??
+		public override string ToFileString()
 		{
 			return base.ToFileString()+$",{Speciality},{Experience}";
+		}
+
+		public override Human Init(string[] values)
+		{
+            base.Init(values);
+			this.Speciality = values[3];
+			this.Experience = Convert.ToDouble(values[4]);
+			return this;
 		}
 	}
 }

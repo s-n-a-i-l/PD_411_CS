@@ -51,6 +51,12 @@ namespace Academy
 		{
 			return $"{GetType().ToString().Split('.').Last()}:{LastName},{FirstName},{Age}";
 		}
-		
+		public virtual Human Init(string[] values) 
+		{
+		    LastName = values[0];
+			FirstName = values[1];
+			Age = Convert.ToInt32(values[2]);
+			return this;
+		}
 	}
 }

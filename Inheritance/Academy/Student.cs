@@ -61,5 +61,15 @@ namespace Academy
 		{
 			return base.ToFileString()+$",{Speciality},{Group},{Rating},{Attendance}";
 		}
+
+		public override Human Init(string[] values)
+		{
+			base.Init(values);
+			this.Speciality = values[3];
+			this.Group = values[4];
+			this.Rating = Convert.ToDouble(values[5]);
+			this.Attendance= Convert.ToDouble(values[6]);
+			return this ;
+		}
 	}
 }

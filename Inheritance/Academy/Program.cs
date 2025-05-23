@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO; //input/output
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 
 namespace Academy
 {
@@ -53,32 +54,83 @@ namespace Academy
 			new Teacher("Diaz", "Ricardo", 50, "Weapons Distribution", 25) };
 
 			//specialization(уточнение):
-			//for (int i = 0; i < group.Length; i++)
-			//{
-			//	Console.WriteLine(group[i]);
-			//	group[i].Info();
-			//	Console.WriteLine(delimiter);
-			//}
+			//Print(group);
+			//Save(group,"Group.txt");
+			//Load("Group.txt");
+			//CSV - COMMA SEPARATOR VALUES значения разделенные запятой;
 
+			Human[] group2 = Load("group.txt");
+			Print(group2);
+		} 
+		public static void Print(Human[] group) 
+		{
+			for (int i = 0; i < group.Length; i++)
+			{
+				Console.WriteLine(group[i]);
+				group[i].Info();
+				Console.WriteLine(delimiter);
+			}
+		}
+
+		public static void Save(Human[] group,string filename) 
+		{
 			StreamWriter sw = new StreamWriter("Group.txt"); //создаем и открываем поток
 
 			for (int i = 0; i < group.Length; i++)
-			{ 
-			  sw.WriteLine(group[i].ToFileString());
+			{
+				sw.WriteLine(group[i].ToFileString());
 			}
 			sw.Close();//потоки обязательно нужно закрывать
 
-			string[] human2 = File.ReadAllLines("Group.txt");//все линии из файла в массив
+			//string[] human2 = File.ReadAllLines("Group.txt");//все линии из файла в массив
 
-			//  выводим массив на экран
-			foreach (string s in human2)
+			////выводим массив на экран
+			//foreach (string s in human2)
+			//{
+			//	Console.WriteLine(s);
+			//}
+			//Process.Start("notepad.exe", filename);
+		}
+
+		public static Human[] Load(string filename)
+		{
+		    List<Human> group =new List<Human>();
+			
+			try 
 			{
-				Console.WriteLine(s);
-			}
-			//Process.Start("notepad.exe", "group.txt");
+				StreamReader sr = new StreamReader(filename);
 
-			//CSV - COMMA SEPARATOR VALUES значения разделенные запятой;
-		} 
+				while (!sr.EndOfStream)
+				{
+					string buffer = sr.ReadLine();
+					//Console.WriteLine(buffer);
+					Human human = HumanFactory(buffer.Split(':').First());
+					human.Init(buffer.Split(':').Last().Split(','));
+					group.Add(human);
+				}
+
+				sr.Close();
+			}
+			catch (Exception ex) 
+			{
+			 Console.WriteLine(ex.Message);
+			}
+			return group.ToArray();
+		}
+
+		public static Human HumanFactory (string type) 
+		{
+			Human human = null;
+			switch (type) 
+			{
+				case "Human": human = new Human("", "", 0); break;
+				case "Student": human = new Student("", "", 0, "", "", 0, 0); break;
+				case "Graduate": human = new Graduate("", "", 0, "", "", 0, 0,"n/a"); break;
+				case "Teacher": human = new Teacher("", "", 0, "", 0); break;
+
+			}
+				return human;
+		}
 	}
 }
 
