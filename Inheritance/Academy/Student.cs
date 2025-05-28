@@ -32,14 +32,13 @@ namespace Academy
 			Attendance = attendance;
 			Console.WriteLine($"SConstructor\t:{this.GetHashCode()}");
 		}
-
-		public Student(Student other) : base(other)//неявно происходит upcase-преобразование объекта дочернего класса в объект базового класса
+		public Student(Student other) : base(other) //здесь нефвно происходит Upcase - преобразование объекта доернего класса в объект базового класса.
 		{
 			this.Speciality = other.Speciality;
 			this.Group = other.Group;
 			this.Rating = other.Rating;
 			this.Attendance = other.Attendance;
-			Console.WriteLine($"SCopyConstructor\t:{this.GetHashCode()}");
+			Console.WriteLine($"SCopyConstructor:{this.GetHashCode()}");
 		}
 		~Student()
 		{
@@ -50,26 +49,23 @@ namespace Academy
 			base.Info();
 			Console.WriteLine($"{Speciality} {Group} {Rating} {Attendance}");
 		}
-
 		public override string ToString()
 		{
-			return base.ToString()
-				+ $"{Speciality.PadRight(25)}{Group.PadRight(8)}{Rating.ToString().PadRight(10)}{Attendance.ToString().PadRight(8)}";
+			return base.ToString() +
+				$"{Speciality.PadRight(25)}{Group.PadRight(8)}{Rating.ToString().PadRight(8)}{Attendance.ToString().PadRight(8)}";
 		}
-
 		public override string ToFileString()
 		{
 			return base.ToFileString()+$",{Speciality},{Group},{Rating},{Attendance}";
 		}
-
 		public override Human Init(string[] values)
 		{
 			base.Init(values);
 			this.Speciality = values[3];
 			this.Group = values[4];
 			this.Rating = Convert.ToDouble(values[5]);
-			this.Attendance= Convert.ToDouble(values[6]);
-			return this ;
+			this.Attendance = Convert.ToDouble(values[6]);
+			return this;
 		}
 	}
 }

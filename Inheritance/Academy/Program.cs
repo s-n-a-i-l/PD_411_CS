@@ -1,12 +1,13 @@
 ﻿//#define INHERITANCE
+//#define SAVE_TO_FILE
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO; //input/output
-using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
+using System.IO;    //Input/Output
+using System.Diagnostics;   //Для запуска других программ при помощи класса 'Process';
 
 namespace Academy
 {
@@ -15,6 +16,7 @@ namespace Academy
 		static readonly string delimiter = "\n----------------------------------------------\n";
 		static void Main(string[] args)
 		{
+
 #if INHERITANCE
 			Human human = new Human("Montana", "Antonio", 25);
 			human.Info();
@@ -40,63 +42,68 @@ namespace Academy
 			g_tommy.Info();
 			Console.WriteLine(delimiter);
 
-			Graduate graduate = new Graduate("Shreder", "Hank", 40, "Criminalistic", "OBN", 70, 80, "How to cetch Hizenberg");
+			Graduate graduate = new Graduate("Schreder", "Hank", 40, "Criminalistic", "OBN", 70, 80, "How to catch Heizenberg");
 			graduate.Info();
 			Console.WriteLine(delimiter); 
 #endif
-			//разнотипные в однотипные->generalization
+
+#if SAVE_TO_FILE
+			//Generalization (Обобщение):
 			Human[] group = new Human[]
-			{//upcast - преобразование объекта дочернего класса в объект базового класса
-			new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 95, 96),
-			new Teacher("White", "Walter", 50, "Chemistry", 25),
-			new Graduate("Vercetty", "Tommy", 30, "Theft", "Voice", 95, 98, "How to make money"),
-			new Graduate("Shreder", "Hank", 40, "Criminalistic", "OBN", 70, 80, "How to cetch Hizenberg"),
-			new Teacher("Diaz", "Ricardo", 50, "Weapons Distribution", 25) };
+				{
+					//Upcast - преобразование объекта дочернего класса в объект базового класса
+					new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 95, 96),
+					new Teacher("White", "Walter", 50, "Chemistry", 25),
+					new Graduate("Vercetty", "Tommy", 30, "Theft", "Vice", 95, 98, "How to make money"),
+					new Graduate("Schreder", "Hank", 40, "Criminalistic", "OBN", 70, 80, "How to catch Heizenberg"),
+					new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20)
+				};
 
-			//specialization(уточнение):
-			//Print(group);
-			//Save(group,"Group.txt");
-			//Load("Group.txt");
-			//CSV - COMMA SEPARATOR VALUES значения разделенные запятой;
+			Print(group);
+			Save(group, "group.csv"); 
+#endif
+			///////////////////////////////////////////////
+			///
 
-			Human[] group2 = Load("group.txt");
-			Print(group2);
-		} 
-		public static void Print(Human[] group) 
+			Human[] group = Load("base.csv");
+			Print(group);
+
+			Console.WriteLine("DONE");
+			//abstract
+
+		}
+		public static void Print(Human[] group)
 		{
+			//Specialization (Уточнение):
 			for (int i = 0; i < group.Length; i++)
 			{
 				Console.WriteLine(group[i]);
-				group[i].Info();
-				Console.WriteLine(delimiter);
+				//group[i].Info();
+				//Console.WriteLine(delimiter);
 			}
 		}
-
-		public static void Save(Human[] group,string filename) 
+		public static void Save(Human[] group, string filename)
 		{
-			StreamWriter sw = new StreamWriter("Group.txt"); //создаем и открываем поток
+
+			StreamWriter sw = new StreamWriter(filename);    //Создаем и открываем поток
 
 			for (int i = 0; i < group.Length; i++)
 			{
 				sw.WriteLine(group[i].ToFileString());
 			}
-			sw.Close();//потоки обязательно нужно закрывать
 
-			//string[] human2 = File.ReadAllLines("Group.txt");//все линии из файла в массив
+			sw.Close(); //Потоки обязательно нужно закрывать!!!
 
-			////выводим массив на экран
-			//foreach (string s in human2)
-			//{
-			//	Console.WriteLine(s);
-			//}
-			//Process.Start("notepad.exe", filename);
+			Process.Start("notepad.exe", filename);
+
+			//CSV - Comma Separated Values (Значения раздеренные запятой);
+
 		}
-
 		public static Human[] Load(string filename)
 		{
-		    List<Human> group =new List<Human>();
-			
-			try 
+			List<Human> group = new List<Human>();
+
+			try
 			{
 				StreamReader sr = new StreamReader(filename);
 
@@ -111,29 +118,24 @@ namespace Academy
 
 				sr.Close();
 			}
-			catch (Exception ex) 
+			catch (Exception ex)
 			{
-			 Console.WriteLine(ex.Message);
+				Console.WriteLine(ex.Message);
 			}
+
 			return group.ToArray();
 		}
-
-		public static Human HumanFactory (string type) 
+		public static Human HumanFactory(string type)
 		{
 			Human human = null;
-			switch (type) 
+			switch (type)
 			{
-				case "Human": human = new Human("", "", 0); break;
-				case "Student": human = new Student("", "", 0, "", "", 0, 0); break;
-				case "Graduate": human = new Graduate("", "", 0, "", "", 0, 0,"n/a"); break;
-				case "Teacher": human = new Teacher("", "", 0, "", 0); break;
-
+				case "Human":		human = new Human("", "", 0); break;
+				case "Student":		human = new Student("", "", 0, "", "", 0, 0);break;
+				case "Graduate":	human = new Graduate("", "", 0, "", "", 0, 0, "n/a");break;
+				case "Teacher":		human = new Teacher("", "", 0, "", 0);break;
 			}
-				return human;
+			return human;
 		}
 	}
 }
-
-
-
-
