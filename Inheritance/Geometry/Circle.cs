@@ -22,24 +22,30 @@ namespace Geometry
 			Radius = radius;
 		}
 
+		public double GetDiameter() 
+		{
+		 return Radius * 2;
+		}
+
 		public override double GetArea()
 		{
 			return Math.PI * Math.Pow(Radius, 2);
 		}
 		public override double GetPerimeter()
 		{
-			return 2*Math.PI*Radius;
+			return GetDiameter() * Math.PI;
 		}
 		public override void Draw(PaintEventArgs e)
 		{
 			Pen pen = new Pen(Color, LineWidth);
-			e.Graphics.DrawEllipse(pen, StartX, StartY, (float)Radius * 2, (float)Radius * 2);
+			e.Graphics.DrawEllipse(pen, StartX, StartY, (float)GetDiameter(), (float)GetDiameter());
 		}
 		public override void Info(PaintEventArgs e)
 		{
 			Console.WriteLine();
 			Console.WriteLine(GetType());
 			Console.WriteLine($"Радиус: {Radius}");
+			Console.WriteLine($"Диаметр: {GetDiameter()}");
 			base.Info(e);
 		}
 	}
